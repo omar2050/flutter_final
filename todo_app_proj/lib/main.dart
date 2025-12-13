@@ -5,6 +5,7 @@ import 'models/task_model.dart';
 import 'providers/todo_provider.dart';
 import 'screens/home_screen.dart';
 
+// Person 1: Explain app startup - Hive initialization and app entry point
 void main() async {
   await Hive.initFlutter();
 
@@ -15,6 +16,7 @@ void main() async {
   runApp(const MyApp());
 }
 
+// Person 1: Explain Provider setup and app theme
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

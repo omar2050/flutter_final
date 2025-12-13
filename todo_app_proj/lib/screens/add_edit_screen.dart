@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../providers/todo_provider.dart';
 import '../../models/task_model.dart';
 
+// Person 6: Explain the form screen for creating and editing tasks
 class AddEditScreen extends StatefulWidget {
   final Task? task;
   final int? index;
@@ -14,49 +15,56 @@ class AddEditScreen extends StatefulWidget {
 }
 
 class _AddEditScreenState extends State<AddEditScreen> {
-  final _formKey = GlobalKey<FormState>();
-  late TextEditingController _titleController;
-  late TextEditingController _descController;
-  String _selectedPriority = 'Medium';
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  String selectedPriority = 'Medium';
 
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController(text: widget.task?.title ?? '');
-    _descController =
-        TextEditingController(text: widget.task?.description ?? '');
     if (widget.task != null) {
-      _selectedPriority = widget.task!.priority;
+      titleController.text = widget.task!.title;
+      descriptionController.text = widget.task!.description;
+      selectedPriority = widget.task!.priority;
     }
   }
 
+  // Person 6: Form with title input, description input, and priority dropdown
   @override
   Widget build(BuildContext context) {
+    String pageTitle = widget.task == null ? 'New Task' : 'Edit Task';
+    String buttonText = widget.task == null ? 'Create Task' : 'Save Changes';
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.task == null ? 'New Task' : 'Edit Task'),
+        title: Text(pageTitle),
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
-          key: _formKey,
+          key: formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
-                controller: _titleController,
+                controller: titleController,
                 decoration: const InputDecoration(
                   labelText: 'Task Title',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter a title' : null,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a title';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller: _descController,
+                controller: descriptionController,
                 decoration: const InputDecoration(
                   labelText: 'Description (Optional)',
                   border: OutlineInputBorder(),
@@ -65,19 +73,21 @@ class _AddEditScreenState extends State<AddEditScreen> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: _selectedPriority,
+                value: selectedPriority,
                 decoration: const InputDecoration(
                   labelText: 'Priority Level',
                   border: OutlineInputBorder(),
                 ),
-                items: ['High', 'Medium', 'Low'].map((String priority) {
-                  return DropdownMenuItem(
-                    value: priority,
-                    child: Text(priority),
-                  );
-                }).toList(),
-                onChanged: (val) {
-                  setState(() => _selectedPriority = val!);
+                items: [
+                  DropdownMenuItem(value: 'High', child: const Text('High')),
+                  DropdownMenuItem(
+                      value: 'Medium', child: const Text('Medium')),
+                  DropdownMenuItem(value: 'Low', child: const Text('Low')),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    selectedPriority = value!;
+                  });
                 },
               ),
               const SizedBox(height: 24),
@@ -88,12 +98,11 @@ class _AddEditScreenState extends State<AddEditScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _saveTask();
+                  if (formKey.currentState!.validate()) {
+                    saveTask();
                   }
                 },
-                child:
-                    Text(widget.task == null ? 'Create Task' : 'Save Changes'),
+                child: Text(buttonText),
               ),
             ],
           ),
@@ -102,24 +111,24 @@ class _AddEditScreenState extends State<AddEditScreen> {
     );
   }
 
-  void _saveTask() {
-    final provider = Provider.of<TodoProvider>(context, listen: false);
+  // Person 6: Save new task or update existing task by calling Provider methods
+  void saveTask() {
+    TodoProvider provider = Provider.of<TodoProvider>(context, listen: false);
+    String title = titleController.text;
+    String description = descriptionController.text;
+    String priority = selectedPriority;
 
     if (widget.task == null) {
-      provider.addTask(
-        _titleController.text,
-        _descController.text,
-        _selectedPriority,
-      );
+      provider.addTask(title, description, priority);
     } else {
-      final updatedTask = Task(
-        title: _titleController.text,
-        description: _descController.text,
-        priority: _selectedPriority,
+      Task newTask = Task(
+        title: title,
+        description: description,
+        priority: priority,
         isCompleted: widget.task!.isCompleted,
         createdAt: widget.task!.createdAt,
       );
-      provider.updateTask(widget.index!, updatedTask);
+      provider.updateTask(widget.index!, newTask);
     }
     Navigator.pop(context);
   }

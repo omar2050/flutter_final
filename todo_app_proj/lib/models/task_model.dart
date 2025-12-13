@@ -1,11 +1,12 @@
 import 'package:hive/hive.dart';
 
+// Person 2: Explain the Task class - the data structure we're working with
 class Task {
   String title;
   String description;
   String priority;
   bool isCompleted;
-  final DateTime createdAt;
+  DateTime createdAt;
 
   Task({
     required this.title,
@@ -16,16 +17,19 @@ class Task {
   });
 }
 
+// Person 2: Explain TaskAdapter - how tasks are saved and loaded from phone storage
 class TaskAdapter extends TypeAdapter<Task> {
   @override
   final int typeId = 0;
 
   @override
   Task read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
+    int numFields = reader.readByte();
+    Map<int, dynamic> fields = {};
+    for (int i = 0; i < numFields; i++) {
+      int key = reader.readByte();
+      fields[key] = reader.read();
+    }
     return Task(
       title: fields[0] as String,
       description: fields[1] as String,
@@ -37,17 +41,16 @@ class TaskAdapter extends TypeAdapter<Task> {
 
   @override
   void write(BinaryWriter writer, Task obj) {
-    writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.title)
-      ..writeByte(1)
-      ..write(obj.description)
-      ..writeByte(2)
-      ..write(obj.priority)
-      ..writeByte(3)
-      ..write(obj.isCompleted)
-      ..writeByte(4)
-      ..write(obj.createdAt);
+    writer.writeByte(5);
+    writer.writeByte(0);
+    writer.write(obj.title);
+    writer.writeByte(1);
+    writer.write(obj.description);
+    writer.writeByte(2);
+    writer.write(obj.priority);
+    writer.writeByte(3);
+    writer.write(obj.isCompleted);
+    writer.writeByte(4);
+    writer.write(obj.createdAt);
   }
 }
