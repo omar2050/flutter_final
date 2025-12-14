@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 
-// Person 2: Explain the Task class - the data structure we're working with
 class Task {
   String title;
   String description;
@@ -17,7 +16,6 @@ class Task {
   });
 }
 
-// Person 2: Explain TaskAdapter - how tasks are saved and loaded from phone storage
 class TaskAdapter extends TypeAdapter<Task> {
   @override
   final int typeId = 0;

@@ -6,7 +6,6 @@ import 'add_edit_screen.dart';
 import 'stats_screen.dart';
 import 'completed_tasks_screen.dart';
 
-// Person 4: Explain the home screen - navigation hub with bottom tabs
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -25,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // Person 4: Helper method that returns color based on task priority level
   Color getPriorityColor(String priority) {
     if (priority == 'High') {
       return Colors.red.shade100;
@@ -38,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // Person 4: Main build method - shows the navigation bar and screen switching logic
   @override
   Widget build(BuildContext context) {
     List<Widget> screens = [
@@ -95,7 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Person 5: Build the tasks list with checkbox, edit button, and delete button
   Widget buildTasksScreen() {
     return Consumer<TodoProvider>(
       builder: (context, provider, child) {
@@ -115,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
           itemBuilder: (context, index) {
             Task task = provider.tasks[index];
             return Dismissible(
-              key: UniqueKey(),
+              key: ValueKey('${task.title}-${task.createdAt.toString()}'),
               background: Container(
                 color: Colors.red,
                 alignment: Alignment.centerRight,
@@ -123,11 +119,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: const Icon(Icons.delete, color: Colors.white),
               ),
               direction: DismissDirection.endToStart,
-              onDismissed: (_) {
-                provider.deleteTask(index);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Task deleted')),
-                );
+              onDismissed: (_) async {
+                await provider.deleteTask(index);
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Task deleted')),
+                  );
+                }
               },
               child: Card(
                 color: task.isCompleted

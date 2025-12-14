@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '../../providers/todo_provider.dart';
 import '../../models/task_model.dart';
 
-// Person 6: Explain the form screen for creating and editing tasks
 class AddEditScreen extends StatefulWidget {
   final Task? task;
   final int? index;
@@ -30,7 +29,6 @@ class _AddEditScreenState extends State<AddEditScreen> {
     }
   }
 
-  // Person 6: Form with title input, description input, and priority dropdown
   @override
   Widget build(BuildContext context) {
     String pageTitle = widget.task == null ? 'New Task' : 'Edit Task';
@@ -111,7 +109,6 @@ class _AddEditScreenState extends State<AddEditScreen> {
     );
   }
 
-  // Person 6: Save new task or update existing task by calling Provider methods
   void saveTask() {
     TodoProvider provider = Provider.of<TodoProvider>(context, listen: false);
     String title = titleController.text;
