@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/todo_provider.dart';
 
-// Person 7: Explain the statistics screen - showing task counts and priority breakdown
 class StatsScreen extends StatelessWidget {
   const StatsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Person 7: Set up the screen structure with AppBar and Consumer
     return Scaffold(
       appBar: AppBar(
         title: const Text('Statistics'),
@@ -16,12 +16,10 @@ class StatsScreen extends StatelessWidget {
       ),
       body: Consumer<TodoProvider>(
         builder: (context, provider, child) {
+          // Person 8: Count completed and pending tasks
           int totalTasks = provider.tasks.length;
           int completedTasks = 0;
           int pendingTasks = 0;
-          int highPriority = 0;
-          int mediumPriority = 0;
-          int lowPriority = 0;
 
           for (var task in provider.tasks) {
             if (task.isCompleted) {
@@ -29,6 +27,14 @@ class StatsScreen extends StatelessWidget {
             } else {
               pendingTasks++;
             }
+          }
+
+          // Person 9: Count tasks by priority level
+          int highPriority = 0;
+          int mediumPriority = 0;
+          int lowPriority = 0;
+
+          for (var task in provider.tasks) {
             if (task.priority == 'High') {
               highPriority++;
             } else if (task.priority == 'Medium') {
@@ -43,6 +49,7 @@ class StatsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // Person 7: Display total tasks card
                 Card(
                   color: Colors.teal.shade100,
                   elevation: 2,
@@ -72,6 +79,7 @@ class StatsScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
+                // Person 8: Display completed and pending tasks cards
                 Card(
                   color: Colors.green.shade100,
                   elevation: 2,
@@ -130,6 +138,7 @@ class StatsScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
+                // Person 9: Display priority breakdown section
                 const Text(
                   'Priority Breakdown',
                   style: TextStyle(
