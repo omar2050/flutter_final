@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/todo_provider.dart';
-import 'add_edit_screen.dart';
 
 // Person 7: Explain the completed tasks screen - filtering and displaying finished tasks
 class CompletedTasksScreen extends StatelessWidget {

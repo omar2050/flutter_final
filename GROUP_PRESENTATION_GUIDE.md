@@ -1,7 +1,3 @@
-# 📋 GROUP PRESENTATION GUIDE - NEW SPLIT
-
-## ✅ NEW PERSON ASSIGNMENTS (EQUALLY BALANCED)
-
 ### **Person 1 - App Startup (3 min)**
 **File:** `lib/main.dart`
 - `main()` function - Hive initialization
@@ -78,16 +74,15 @@
 ---
 
 ## 📊 TIME BREAKDOWN
-| Person | Topic | Time | Difficulty |
-|--------|-------|------|------------|
-| 1 | App Startup | 3 min | ⭐ |
-| 2 | Task Model | 2 min | ⭐ |
-| 3 | Provider Logic | 8 min | ⭐⭐⭐ |
-| 4 | Navigation | 4 min | ⭐⭐ |
-| 5 | Task List | 6 min | ⭐⭐ |
-| 6 | Form Handling | 5 min | ⭐⭐ |
-| 7 | Stats & Views | 4 min | ⭐⭐ |
-| **TOTAL** | | **32 min** | Balanced |
+| Person | Topic | Name
+|--------|-------|------
+| 1 | App Startup | Abdelrahman Nehad
+| 2 | Task Model |Tasneem
+| 3 | Provider Logic | Badry
+| 4 | Navigation | Omar Waleed
+| 5 | Task List | Omar Awad 
+| 6 | Form Handling | Raneem 
+| 7 | Stats & Views | Doaa
 
 ---
 
